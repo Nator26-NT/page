@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Style the navigation bar */
+        .navbar {
+            overflow: hidden;
+            background-color: #ffffff;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 2; /* Ensure the navbar is above the slideshow */
+        }
+
+        /* Style the logo */
+        .navbar img {
+            height: 50px;
+            margin: 10px;
+        }
+
+        /* Style the links inside the navigation bar */
+        .navbar a, .dropdown button {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 17px;
+            background-color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Change the color of links on hover */
+        .navbar a:hover, .dropdown:hover button {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Style the container div - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown content (hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #08025a;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgb(255, 255, 254);
+            z-index: 3; /* Ensure the dropdown content is above the navbar */
+            flex-direction: row;
+            flex-wrap: wrap; /* Allow content to wrap */
+        }
+
+        /* Style the dropdown buttons */
+        .dropdown-content a {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 2px;
+            text-decoration: none;
+            color: black;
+            display: inline-block;
+            border-radius: 5px;
+            width: calc(50% - 8px); /* Two links per row with spacing */
+            box-sizing: border-box;
+        }
+
+        /* Change color of dropdown buttons on hover */
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+
+        /* Plain button at the end */
+        .plain-button {
+            float: right;
+            background-color: #1e1b85;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 11px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Change the color of the plain button on hover */
+        .plain-button:hover {
+            background-color: #281f65;
+            color: black;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            position: relative;
+            
+            
+
+        }
+
+        .slideshow-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* This ensures the slideshow is behind the content */
+            overflow: hidden;
+        }
+
+        .mySlides {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .mySlides img {
+            width: 100%;
+            height: 125%;
+            object-fit: cover;
+            opacity: 0.5; /* Adjust the transparency */
+        }
+
+        .content {
+            position: relative;
+            z-index: 1; /* This ensures the content is above the slideshow */
+            padding: 20px;
+            color: #fff; /* Adjust color for better readability over the slideshow */
+            background: rgba(0, 0, 0, 0.5); /* Optional background for readability */
+        }
+
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+            from {opacity: .4}
+            to {opacity: 1}
+        }
+
+        /* Bottom bar for contact information */
+        .bottom-bar {
+            position: relative;
+            bottom: 120px;
+            height: 100px;
+            width: 100%; /* Slightly longer than the top navigation bar */
+            left: -2.5%; /* Center it */
+            background-color: #001f3f; /* Navy blue background */
+            color: #ffffff; /* White text */
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .bottom-bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .bottom-bar a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            position: relative;
+            font-family: 'Impact', sans-serif;
+            top: 50PX;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            text-decoration: underline;
+        }
+        
+        #header {
+            color: #000783; /* Change the color to DodgerBlue */
+            transition: color 2s; /* Smooth transition for color change */
+        }
+        
+        #header:hover {
+            color: #ffffff; /* Change the color to Tomato on hover */
+        }
+
+        
+        .container {
+            text-align: center;
+        }
+        .catchphrase {
+            font-size: 20px; /* Smaller font size for the catchphrase */
+            color: #ffffff; /* Slightly darker color for contrast */
+            position: relative;
+            font-family: 'Impact', sans-serif;
+            top: 50px; /* Space between h1 and the catchphrase */
+        }
+        .container:hover {
+            
+            color: #0006b1; /* Change the color to Tomato on hover */
+            transition: color 2s;
+        }
+
+        
+        .bubble-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .bubble {
+            position: absolute;
+            max-width: 300px;
+            padding: 7px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0; /* Start with hidden bubbles */
+            transition: opacity 0.5s, top 0.5s, left 0.5s;
+        }
+        
+        .bubble:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #fff;
+        }
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            margin: 0 10px;
+            transition: transform 0.3s;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <img src="https://github.com/Nator26-NT/project-Data/blob/main/Screenshot%202025-01-31%20130847.png?raw=true" alt="Logo">
+    <div class="dropdown">
+        <button>Info</button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button>Guidlines</button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button>Events</button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+    
+        </div>
+    </div>
+    <button class="plain-button">Book</button>
+</div>
+
+<!-- Main content to demonstrate the fixed top bar -->
+
+<div class="container">
+    <h1 id="header">Welcome!</h1>
+    <p class="catchphrase">📖Empowering Education, Enabling Sustainability📖</p>
+</div>
+<div class="bubble-container">
+    <!-- Speech bubbles will be dynamically added here -->
+</div>
+<div class="slideshow-container">
+    
+    <div class="mySlides fade">
+        <img src="https://github.com/Nator26-NT/project-Data/blob/main/311644853_609934327583941_5231048267545218059_n.jpeg?raw=true" alt="Image 1">
+    </div>
+    <div class="mySlides fade">
+        <img src="https://github.com/Nator26-NT/project-Data/blob/main/470156407_1167002135431048_507406839293463448_n.jpg?raw=true" alt="Image 2">
+    </div>
+    <div class="mySlides fade">
+        <img src="https://github.com/Nator26-NT/project-Data/blob/main/470532756_1167002118764383_4549361747337752360_n.jpg?raw=true" alt="Image 3">
+    </div>
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+
+
+<!-- Bottom bar for contact information -->
+<div class="bottom-bar">
+    Contact us: 
+    <a href="mailto:info@example.com">info@example.com</a> | 
+    <a href="tel:+1234567890">+1234567890</a> | 
+    <a href="https://www.example.com/contact" target="_blank">Contact Form</a>
+    <br>
+    <br>
+    <br>
+    <a href="https://x.com/IBMResearch" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" class="social-icon">
+    </a>
+    <a href="https://www.facebook.com/IBM" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" class="social-icon">
+    </a>
+    <a href="https://www.linkedin.com/company/ibm/posts/?feedView=all" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn" class="social-icon">
+    </a>
+</div>
+
+<script>
+    let slideIndex = 0;
+    showSlides();
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}
+        slides[slideIndex-1].style.display = "block";
+        setTimeout(showSlides, 3000); // Change image every 3 seconds
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const bubbleContainer = document.querySelector('.bubble-container');
+    
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            bubble.innerHTML = getRandomMessage();
+            bubble.style.top = `${Math.random() * 80}%`; // Ensure bubbles stay within the container
+            bubble.style.left = `${Math.random() * 80}%`;
+            bubbleContainer.appendChild(bubble);
+    
+            setTimeout(() => {
+                bubble.style.opacity = 1;
+            }, 100);
+    
+            setTimeout(() => {
+                bubble.style.opacity = 0;
+                setTimeout(() => {
+                    bubble.remove();
+                }, 500);
+            }, 3000); // Bubbles will disappear after 3 seconds
+        }
+    
+        function getRandomMessage() {
+            const messages = [
+                "Our platform offers a user-friendly interface where you can easily book meeting rooms and resources within your organization",
+                "With features like a comprehensive booking form, real-time room availability display, and a guideline checkbox to ensure compliance with IBM standards, KundiZA Hub streamlines the booking process",
+                "Our robust backend system, powered by Node.jsand MongoDB, efficiently handles requests and reservations, while automated email notifications keep you and the admin informed",
+                "Join us at IBM KundiZA Hub and experience effortless collaboration and innovation",
+                ""
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+    
+        setInterval(createBubble, 2000); // Create a new bubble every 2 seconds
+    });
+    
+</script>
+
+</body>
+</html>
